@@ -49,6 +49,8 @@ A human or computer can query the state of workers:
 
 ```bash
 $ curl -I http://localhost:6666 2>/dev/null
+```
+```json
 {"Command":"worker.py","Arguments":["--dowork", "myqueue"],"StartTime":"2017-03-02T18:20:28.762060588Z","TTL":0,"Status":"running","ExitCode":0}
 ```
 
