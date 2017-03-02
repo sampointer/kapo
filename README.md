@@ -29,7 +29,7 @@ The utility of all of this is probably best illustrated via some exmaples:
 
 ### Abuse an ELB to keep a pool of queue workers running
 1. Create an ELB with no external ingress
-1. Configure the ELB Health check to perform an HTTP check on port 6666 with failure criteria that suit your application
+1. Configure the ELB Health check to perform a TCP or HTTP check on port 6666 with failure criteria that suit your application
 1. Create an auto-scaling group with `HealthCheckType` ELB
 1. Have each host start their worker under `kapo`:
 
@@ -42,7 +42,7 @@ Should the worker on any given node die the ELB will instruct the ASG to kill th
 A slightly less expensive variant that resurrects worker processes if it can is:
 
 ```bash
-$ kapo --interface 0.0.0.0 --port 6666 supervise -- ./worker.py --dowork myqueue
+$ kapo --interface 0.0.0.0 --port 6666 supervise --wait 30 -- ./worker.py --dowork myqueue
 ```
 
 A human or computer can query the state of workers:
