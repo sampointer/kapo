@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-type StatusResponse struct {
+type Status struct {
 	Command   string
 	Arguments []string
 	Status    string
@@ -28,7 +28,8 @@ func CmdRun(c *cli.Context) error {
 	}
 	log.Printf("executing %s %s", path, strings.Join(c.Args().Tail(), " "))
 
-	http.HandleFunc("/", handler)
+	status := Status{Command: c.Args().First(), Arguments: c.Args().Tail(), Status: "ok"}
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { handler(w, r, status) })
 	go http.ListenAndServe("localhost:6666", nil)
 
 	if err := cmd.Wait(); err != nil {
@@ -40,9 +41,8 @@ func CmdRun(c *cli.Context) error {
 	return nil
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	status_response := StatusResponse{"sam", []string{"shit"}, "ok"}
-	js, err := json.Marshal(status_response)
+func handler(w http.ResponseWriter, r *http.Request, status Status) {
+	js, err := json.Marshal(status)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
