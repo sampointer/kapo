@@ -30,7 +30,7 @@ The utility of all of this is probably best illustrated via some exmaples:
 1. Have each host start their worker under `kapo`:
 
 ```bash
-$ kapo --interface 0.0.0.0 --port 6666 run ./worker.py --dowork myqueue
+$ kapo --interface 0.0.0.0 --port 6666 run -- ./worker.py --dowork myqueue
 ```
 
 Should the worker on any given node die the ELB will instruct the ASG to kill the node and another will be provisioned to replace it.
@@ -38,7 +38,7 @@ Should the worker on any given node die the ELB will instruct the ASG to kill th
 A slightly less expensive variant that resurrects worker processes if it can is:
 
 ```bash
-$ kapo --interface 0.0.0.0 --port 6666 supervise ./worker.py --dowork myqueue
+$ kapo --interface 0.0.0.0 --port 6666 supervise -- ./worker.py --dowork myqueue
 ```
 
 A human or computer can query the state of workers:
