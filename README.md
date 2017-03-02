@@ -18,6 +18,8 @@ process state.
 Requests could be as simple as inferring the process is alive if a socket can be opened to as complex as parsing the JSON schema and performing
 selective actions based on the state reported therein.
 
+### Modes
+
 `kapo` can be run in one of three modes: `run`, `supervise` and `watch`.
 
 The first is the most useful as a container `ENTRYPOINT`, especially in tandem with the `--ttl` flag to inject some chaos.
