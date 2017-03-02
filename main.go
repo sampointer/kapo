@@ -11,9 +11,9 @@ func main() {
 	app := cli.NewApp()
 	app.Name = Name
 	app.Version = Version
-	app.Author = "Sam Pointer"
+	app.Author = "Copyright 2017 Sam Pointer"
 	app.Email = "sam@outsidethe.net"
-	app.Usage = ""
+	app.Usage = "Wrap any command in a status socket"
 
 	app.Flags = GlobalFlags
 	app.Commands = Commands
