@@ -27,7 +27,13 @@ var Commands = []cli.Command{
 		Aliases: []string{"r"},
 		Usage:   "run a command and close the socket on exit",
 		Action:  command.CmdRun,
-		Flags:   []cli.Flag{},
+		Flags: []cli.Flag{
+			cli.IntFlag{
+				Name:  "ttl, t",
+				Value: -1,
+				Usage: "Stop execution after `SECOND` seconds",
+			},
+		},
 	},
 	{
 		Name:    "supervise",
