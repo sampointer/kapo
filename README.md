@@ -1,10 +1,65 @@
-# kapo
-
+# Kapo
+Wrap any command in a status socket
 
 
 ## Description
+Kapo is a swiss-army knife integrating programs that do not have their own method of presenting their status over a network into those that need it.
+Examples might be:
 
-## Usage
+1. Allow queue workers to be monitored by your service discovery system
+1. Allow random batch files to present status to your container scheduler
+1. Abuse load balancers to route traffic based on an open port
+
+When a program is executed under `kapo` a JSON-speaking HTTP server is started and the state of the process is reported to whomever requests it.
+Requests could be as simple as inferring the process is alive if a socket can be opened to as complex as parsing the JSON schema and performing
+selective actions based on the state reported therein.
+
+`kapo` can be run in one of three modes: `run`, `supervise` and `watch`.
+
+The first is the most useful as a container `ENTRYPOINT`, especially in tandem with the `--ttl` flag to inject some chaos. The seocond will prop up
+failing processes by continually restarting it if it fails (with an optional wait interval), reporting interesting fasts like the last return code
+and start time on the status listener. The third, `watch`, is for use in tandem with your preferred process supervisor: it'll infer the state of the
+process from the process list of the operating system.
+
+The utility of all of this is probably best illustrated via some exmaples:
+
+### Abuse an ELB to keep a pool of queue workers running
+1. Create an ELB with no external ingress
+1. Configure the ELB Health check to perform an HTTP check on port 6666 with failure criteria that suit your application
+1. Create an auto-scaling group with `HealthCheckType` ELB
+1. Have each host start their worker under `kapo`:
+
+```bash
+$ kapo --interface 0.0.0.0 --port 6666 run ./worker.py --dowork myqueue
+```
+
+Should the worker on any given node die the ELB will instruct the ASG to kill the node and another will be provisioned to replace it.
+
+A slightly less expensive variant that resurrects worker processes if it can is:
+
+```bash
+$ kapo --interface 0.0.0.0 --port 6666 supervise ./worker.py --dowork myqueue
+```
+
+A human or computer can query the state of workers:
+
+```bash
+$ curl -I http://localhost:6666 2>/dev/null
+{"Command":"worker.py","Arguments":["--dowork", "myqueue"],"StartTime":"2017-03-02T18:20:28.762060588Z","TTL":0,"Status":"running","ExitCode":0}
+```
+
+### As a Container `ENTRYPOINT` to inject random failure, exercise your scheduler's resilience and add TTLs to containers
+As all good proponents of the [SRE model](https://landing.google.com/sre/book.html) know, forcing failures by periodically killing execution units,
+forcing circuit breakers to fire, and reguarly refreshing your running environment are vital. `kapo` can be used as a container `ENTRYPOINT` to
+force containers to have a TTL:
+
+```
+FROM ubuntu:latest
+COPY kapo kapo
+RUN apt-get update && apt-get install stress
+EXPOSE 6666
+ENTRYPOINT ./kapo --interface 0.0.0.0 --port 6666 run --ttl 20 -- stress -c 1
+```
 
 ## Install
 
