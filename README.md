@@ -34,7 +34,7 @@ The utility of all of this is probably best illustrated via some exmaples:
 ### Abuse an ELB to keep a pool of queue workers running
 1. Create an ELB with no external ingress
 1. Configure the ELB Health check to perform a TCP or HTTP check on port 6666 with failure criteria that suit your application
-1. Create an auto-scaling group with `HealthCheckType` ELB
+1. Create an auto-scaling group with `HealthCheckType: ELB`
 1. Have each host start their worker under `kapo`:
 
 ```bash
