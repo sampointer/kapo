@@ -59,7 +59,7 @@ $ curl http://localhost:6666 2>/dev/null
 ### As a Container `ENTRYPOINT` to inject random failure, exercise your scheduler's resilience and add TTLs to containers
 As all good proponents of the [SRE model](https://landing.google.com/sre/book.html) know, forcing failures by periodically killing execution units,
 forcing circuit breakers to fire, and reguarly refreshing your running environment are vital. `kapo` can be used as a container `ENTRYPOINT` to
-force containers to have a TTL:
+force containers to have a random TTL:
 
 ```
 FROM ubuntu:latest
