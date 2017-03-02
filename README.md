@@ -31,7 +31,8 @@ process from the process list of the operating system.
 
 The utility of all of this is probably best illustrated via some exmaples:
 
-### Abuse an ELB to keep a pool of queue workers running
+### Examples
+#### Abuse an ELB to keep a pool of queue workers running
 1. Create an ELB with no external ingress
 1. Configure the ELB Health check to perform a TCP or HTTP check on port 6666 with failure criteria that suit your application
 1. Create an auto-scaling group with `HealthCheckType: ELB`
@@ -56,7 +57,7 @@ $ curl http://localhost:6666 2>/dev/null
 {"Command":"worker.py","Arguments":["--dowork", "myqueue"],"StartTime":"2017-03-02T18:20:28.762060588Z","TTL":0,"Status":"running","ExitCode":0}
 ```
 
-### As a Container `ENTRYPOINT` to inject random failure, exercise your scheduler's resilience and add TTLs to containers
+#### As a Container `ENTRYPOINT` to inject random failure, exercise your scheduler's resilience and add TTLs to containers
 As all good proponents of the [SRE model](https://landing.google.com/sre/book.html) know, forcing failures by periodically killing execution units,
 forcing circuit breakers to fire, and reguarly refreshing your running environment are vital. `kapo` can be used as a container `ENTRYPOINT` to
 force containers to have a random TTL:
