@@ -16,7 +16,7 @@ func CmdRun(c *cli.Context) error {
 	if err != nil {
 		log.Printf("exited %s", err)
 	} else {
-		log.Printf("exited 0")
+		log.Print("exited 0")
 	}
 
 	return nil
