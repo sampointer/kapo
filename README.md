@@ -58,7 +58,7 @@ FROM ubuntu:latest
 COPY kapo kapo
 RUN apt-get update && apt-get install stress
 EXPOSE 6666
-ENTRYPOINT ./kapo --interface 0.0.0.0 --port 6666 run --ttl 20 -- stress -c 1
+ENTRYPOINT /bin/bash -c './kapo --interface 0.0.0.0 --port 6666 run --ttl $(($RANDOM % 30 + 1)) -- stress -c 1'
 ```
 
 ## Install
