@@ -12,22 +12,25 @@ var GlobalFlags = []cli.Flag{}
 
 var Commands = []cli.Command{
 	{
-		Name:   "run, r",
-		Usage:  "run a command and close the socket on exit",
-		Action: command.CmdRun,
-		Flags:  []cli.Flag{},
+		Name:    "run",
+		Aliases: []string{"r"},
+		Usage:   "run a command and close the socket on exit",
+		Action:  command.CmdRun,
+		Flags:   []cli.Flag{},
 	},
 	{
-		Name:   "supervise, s",
-		Usage:  "run and restart a command continually",
-		Action: command.CmdSupervise,
-		Flags:  []cli.Flag{},
+		Name:    "supervise",
+		Aliases: []string{"s"},
+		Usage:   "run and restart a command continually",
+		Action:  command.CmdSupervise,
+		Flags:   []cli.Flag{},
 	},
 	{
-		Name:   "watch, w",
-		Usage:  "report status of an externally invoked process",
-		Action: command.CmdWatch,
-		Flags:  []cli.Flag{},
+		Name:    "watch",
+		Aliases: []string{"w"},
+		Usage:   "report status of an externally invoked process",
+		Action:  command.CmdWatch,
+		Flags:   []cli.Flag{},
 	},
 }
 
