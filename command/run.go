@@ -13,8 +13,7 @@ func CmdRun(c *cli.Context) error {
 
 	log.Printf("executing %s %s", path, strings.Join(c.Args().Tail(), " "))
 	cmd := exec.Command(path, c.Args().Tail()...)
-	err = cmd.Run()
-	if err != nil {
+	if err := cmd.Run(); err != nil {
 		log.Print(err)
 	} else {
 		log.Print("exited status 0")
