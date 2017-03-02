@@ -31,7 +31,7 @@ and start time on the status listener.
 The third, `watch`, is for use in tandem with your preferred process supervisor: it'll infer the state of the
 process from the process list of the operating system.
 
-The utility of all of this is probably best illustrated via some exmaples:
+The utility of all of this is probably best illustrated via some examples:
 
 ### Examples
 #### Abuse an ELB to keep a pool of queue workers running
