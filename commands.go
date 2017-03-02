@@ -17,7 +17,7 @@ var GlobalFlags = []cli.Flag{
 	cli.StringFlag{
 		Name:  "interface, i",
 		Value: "0.0.0.0",
-		Usage: "interface to bind to `IP`",
+		Usage: "bind to interface `IP`",
 	},
 }
 
