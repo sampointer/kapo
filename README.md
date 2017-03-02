@@ -83,6 +83,9 @@ $ go get -d github.com/sampointer/kapo
 1. Run `gofmt -s`
 1. Create a new Pull Request
 
+## Kapo?
+Keep A Port Open.
+
 ## Author
 
 [sampointer](https://github.com/sampointer)
