@@ -34,7 +34,13 @@ var Commands = []cli.Command{
 		Aliases: []string{"s"},
 		Usage:   "run and restart a command continually",
 		Action:  command.CmdSupervise,
-		Flags:   []cli.Flag{},
+		Flags: []cli.Flag{
+			cli.IntFlag{
+				Name:  "wait, w",
+				Value: 5,
+				Usage: "seconds to wait between restarts",
+			},
+		},
 	},
 	{
 		Name:    "watch",
