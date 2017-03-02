@@ -48,7 +48,7 @@ $ kapo --interface 0.0.0.0 --port 6666 supervise --wait 30 -- ./worker.py --dowo
 A human or computer can query the state of workers:
 
 ```bash
-$ curl -I http://localhost:6666 2>/dev/null
+$ curl http://localhost:6666 2>/dev/null
 {"Command":"worker.py","Arguments":["--dowork", "myqueue"],"StartTime":"2017-03-02T18:20:28.762060588Z","TTL":0,"Status":"running","ExitCode":0}
 ```
 
