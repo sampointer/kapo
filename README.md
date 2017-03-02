@@ -3,7 +3,7 @@ Wrap any command in a status socket.
 
 
 ## Description
-Kapo is a swiss-army knife for integrating programs that do not have their own method of presenting their status over a network to those that need it.
+Kapo is a swiss-army knife for integrating programs that do not have their own method of presenting their status over a network with those that need it.
 Examples might be:
 
 1. Allow queue workers to be monitored by your service discovery system
