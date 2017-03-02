@@ -15,9 +15,10 @@ import (
 type Status struct {
 	Command   string
 	Arguments []string
+	StartTime time.Time
+	TTL       time.Duration
 	Status    string
 	ExitCode  int
-	StartTime time.Time
 }
 
 func CmdRun(c *cli.Context) error {
@@ -33,7 +34,7 @@ func CmdRun(c *cli.Context) error {
 	}
 
 	// If we've been given a TTL execute with a context
-	if c.Int("ttl") != -1 {
+	if c.Int("ttl") != 0 {
 		ttl = time.Duration(c.Int("ttl")) * time.Second
 		ctx, cancel = context.WithTimeout(context.Background(), ttl)
 		defer cancel()
@@ -56,6 +57,7 @@ func CmdRun(c *cli.Context) error {
 		Arguments: c.Args().Tail(),
 		Status:    "running",
 		StartTime: time.Now(),
+		TTL:       ttl,
 	}
 
 	// Start the status server in a gorountine

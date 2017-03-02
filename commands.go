@@ -30,7 +30,7 @@ var Commands = []cli.Command{
 		Flags: []cli.Flag{
 			cli.IntFlag{
 				Name:  "ttl, t",
-				Value: -1,
+				Value: 0,
 				Usage: "Stop execution after `SECOND` seconds",
 			},
 		},
