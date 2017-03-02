@@ -33,7 +33,7 @@ func CmdRun(c *cli.Context) error {
 	status := Status{
 		Command:   c.Args().First(),
 		Arguments: c.Args().Tail(),
-		Status:    "ok",
+		Status:    "running",
 	}
 
 	bindaddr := fmt.Sprintf("%s:%s", c.GlobalString("interface"), c.GlobalString("port"))
