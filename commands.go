@@ -8,7 +8,18 @@ import (
 	"gopkg.in/urfave/cli.v1"
 )
 
-var GlobalFlags = []cli.Flag{}
+var GlobalFlags = []cli.Flag{
+	cli.StringFlag{
+		Name:  "port, p",
+		Value: "6666",
+		Usage: "port to listen on `PORT`",
+	},
+	cli.StringFlag{
+		Name:  "interface, i",
+		Value: "0.0.0.0",
+		Usage: "interface to bind to `IP`",
+	},
+}
 
 var Commands = []cli.Command{
 	{

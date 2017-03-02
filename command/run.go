@@ -2,6 +2,7 @@ package command
 
 import (
 	"encoding/json"
+	"fmt"
 	"gopkg.in/urfave/cli.v1"
 	"log"
 	"net/http"
@@ -13,6 +14,7 @@ type Status struct {
 	Command   string
 	Arguments []string
 	Status    string
+	ExitCode  int
 }
 
 func CmdRun(c *cli.Context) error {
@@ -28,9 +30,17 @@ func CmdRun(c *cli.Context) error {
 	}
 	log.Printf("executing %s %s", path, strings.Join(c.Args().Tail(), " "))
 
-	status := Status{Command: c.Args().First(), Arguments: c.Args().Tail(), Status: "ok"}
+	status := Status{
+		Command:   c.Args().First(),
+		Arguments: c.Args().Tail(),
+		Status:    "ok",
+	}
+
+	bindaddr := fmt.Sprintf("%s:%s", c.GlobalString("interface"), c.GlobalString("port"))
+	log.Printf("binding to %s", bindaddr)
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { handler(w, r, status) })
-	go http.ListenAndServe("localhost:6666", nil)
+	go http.ListenAndServe(bindaddr, nil)
 
 	if err := cmd.Wait(); err != nil {
 		log.Print(err)
