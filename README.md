@@ -1,4 +1,4 @@
-# Kapo
+# Kapo <img align="right" src="/assets/ganster-small.png" alt="ganster-small" />
 Wrap any command in a status socket
 
 
