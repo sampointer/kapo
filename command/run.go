@@ -3,6 +3,7 @@ package command
 import "gopkg.in/urfave/cli.v1"
 import "log"
 import "os/exec"
+import "strings"
 
 func CmdRun(c *cli.Context) error {
 	path, err := exec.LookPath(c.Args().First())
@@ -10,13 +11,13 @@ func CmdRun(c *cli.Context) error {
 		log.Fatal(err)
 	}
 
-	log.Printf("executing %s", path)
+	log.Printf("executing %s %s", path, strings.Join(c.Args().Tail(), " "))
 	cmd := exec.Command(path, c.Args().Tail()...)
 	err = cmd.Run()
 	if err != nil {
-		log.Printf("exited %s", err)
+		log.Print(err)
 	} else {
-		log.Print("exited 0")
+		log.Print("exited status 0")
 	}
 
 	return nil
