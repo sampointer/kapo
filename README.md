@@ -16,9 +16,13 @@ selective actions based on the state reported therein.
 
 `kapo` can be run in one of three modes: `run`, `supervise` and `watch`.
 
-The first is the most useful as a container `ENTRYPOINT`, especially in tandem with the `--ttl` flag to inject some chaos. The seocond will prop up
+The first is the most useful as a container `ENTRYPOINT`, especially in tandem with the `--ttl` flag to inject some chaos.
+
+The second will prop up
 failing processes by continually restarting it if it fails (with an optional wait interval), reporting interesting fasts like the last return code
-and start time on the status listener. The third, `watch`, is for use in tandem with your preferred process supervisor: it'll infer the state of the
+and start time on the status listener.
+
+The third, `watch`, is for use in tandem with your preferred process supervisor: it'll infer the state of the
 process from the process list of the operating system.
 
 The utility of all of this is probably best illustrated via some exmaples:
