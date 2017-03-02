@@ -11,6 +11,10 @@ Examples might be:
 1. Abuse load balancers to route traffic based on an open port
 
 When a program is executed under `kapo` a JSON-speaking HTTP server is started and the state of the process is reported to whomever requests it.
+
+This server will respond correctly to HEAD requests. The open socket will function as an indicator of aliveness. The body is a JSON reflecting
+process state.
+
 Requests could be as simple as inferring the process is alive if a socket can be opened to as complex as parsing the JSON schema and performing
 selective actions based on the state reported therein.
 
