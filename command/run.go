@@ -7,6 +7,18 @@ import (
 
 func CmdRun(c *cli.Context) error {
 
-	process.Run(c)
+	status := process.Status{
+		Command:   c.Args().First(),
+		Arguments: c.Args().Tail(),
+		Status:    "running",
+		Mode:      "run",
+		TTL:       time.Duration(c.Int("ttl")),
+	}
+
+	process.Setup(c, &status)
+
+	status.StartTime = time.Now()
+	err := process.Run(c)
+
 	return nil
 }

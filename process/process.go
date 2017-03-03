@@ -17,8 +17,22 @@ type Status struct {
 	Arguments []string
 	StartTime time.Time
 	TTL       time.Duration
+	Wait      time.Duration
 	Status    string
 	ExitCode  int
+	Mode      string
+}
+
+func Setup(c *cli.Context, s *Status) error {
+
+	// Start the status server in a gorountine
+	bindaddr := fmt.Sprintf("%s:%s", c.GlobalString("interface"), c.GlobalString("port"))
+	log.Printf("binding to %s", bindaddr)
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { handler(w, r, *s) })
+	go http.ListenAndServe(bindaddr, nil)
+
+	return nil
 }
 
 func Run(c *cli.Context) error {
@@ -50,22 +64,6 @@ func Run(c *cli.Context) error {
 		log.Fatal("failed to start %s %s", path, strings.Join(c.Args().Tail(), " "))
 	}
 	log.Printf("executing %s %s", path, strings.Join(c.Args().Tail(), " "))
-
-	// Prepare a static status object
-	status := Status{
-		Command:   c.Args().First(),
-		Arguments: c.Args().Tail(),
-		Status:    "running",
-		StartTime: time.Now(),
-		TTL:       ttl,
-	}
-
-	// Start the status server in a gorountine
-	bindaddr := fmt.Sprintf("%s:%s", c.GlobalString("interface"), c.GlobalString("port"))
-	log.Printf("binding to %s", bindaddr)
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { handler(w, r, status) })
-	go http.ListenAndServe(bindaddr, nil)
 
 	// Report the supervised process's exit status
 	if err := cmd.Wait(); err != nil {
