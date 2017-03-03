@@ -1,9 +1,12 @@
 package command
 
-import "gopkg.in/urfave/cli.v1"
+import (
+	"fmt"
+	"gopkg.in/urfave/cli.v1"
+)
 
 func CmdWatch(c *cli.Context) error {
-	// Write your code here
+	fmt.Println("Command not yet implemented")
 
 	return nil
 }
