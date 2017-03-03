@@ -12,15 +12,6 @@ import (
 	"time"
 )
 
-type Status struct {
-	Command   string
-	Arguments []string
-	StartTime time.Time
-	TTL       time.Duration
-	Status    string
-	ExitCode  int
-}
-
 func CmdRun(c *cli.Context) error {
 
 	var ctx context.Context
