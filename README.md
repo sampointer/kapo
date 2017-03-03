@@ -74,7 +74,7 @@ ENTRYPOINT /bin/bash -c './kapo --interface 0.0.0.0 --port 6666 run --ttl $(($RA
 
 ### Expose Puppet run activity
 ```bash
-$ kapo watch puppet
+$ nohup kapo watch puppet &
 $ curl http://somehost:6666 2>/dev/null
 {"Command":"puppet","Arguments":[],"StartTime":"","TTL":0,"Status":"stopped","ExitCode":2}
 $ sleep 300
