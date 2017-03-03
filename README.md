@@ -75,8 +75,11 @@ ENTRYPOINT /bin/bash -c './kapo --interface 0.0.0.0 --port 6666 run --ttl $(($RA
 ### Expose Puppet run activity
 ```bash
 $ kapo watch puppet
-$ $ curl http://somehost:6666 2>/dev/null
+$ curl http://somehost:6666 2>/dev/null
 {"Command":"puppet","Arguments":[],"StartTime":"","TTL":0,"Status":"stopped","ExitCode":2}
+$ sleep 300
+$ curl http://somehost:6666 2>/dev/null
+{"Command":"puppet","Arguments":["apply"],"StartTime":"2017-03-02T18:20:28.762060588Z","TTL":0,"Status":"running","ExitCode":0}
 ```
 
 ## Install
