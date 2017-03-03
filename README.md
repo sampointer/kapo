@@ -1,4 +1,4 @@
-# Kapo <img>https://circleci.com/gh/sampointer/kapo.svg?style=svg</img> <img align="right" src="/assets/ganster-small.png" alt="ganster-small" />
+# Kapo <img https://circleci.com/gh/sampointer/kapo.svg?style=svg /> <img align="right" src="/assets/ganster-small.png" alt="ganster-small" />
 Wrap any command in a status socket.
 
 
