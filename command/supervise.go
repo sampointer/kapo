@@ -23,7 +23,7 @@ func CmdSupervise(c *cli.Context) error {
 		status.StartTime = time.Now()
 		err := process.Run(c)
 
-		if err != nil {
+		if err > 0 {
 			status.ExitCode = err
 			status.Status = "stopped"
 		}

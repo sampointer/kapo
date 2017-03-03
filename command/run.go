@@ -3,6 +3,7 @@ package command
 import (
 	"github.com/sampointer/kapo/process"
 	"gopkg.in/urfave/cli.v1"
+  "time"
 )
 
 func CmdRun(c *cli.Context) error {
@@ -18,7 +19,7 @@ func CmdRun(c *cli.Context) error {
 	process.Setup(c, &status)
 
 	status.StartTime = time.Now()
-	err := process.Run(c)
+	process.Run(c)
 
 	return nil
 }

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os/exec"
 	"strings"
+  "syscall"
 	"time"
 )
 
@@ -35,10 +36,11 @@ func Setup(c *cli.Context, s *Status) error {
 	return nil
 }
 
-func Run(c *cli.Context) error {
+func Run(c *cli.Context) int {
 
 	var ctx context.Context
 	var cancel context.CancelFunc
+  var rc int
 	var ttl time.Duration
 
 	// Ensure we can find our executable
@@ -67,12 +69,20 @@ func Run(c *cli.Context) error {
 
 	// Report the supervised process's exit status
 	if err := cmd.Wait(); err != nil {
-		log.Print(err)
-		return err
-	} else {
-		log.Print("exited status 0")
-		return nil
-	}
+    if exiterr, ok := err.(*exec.ExitError); ok {
+      // Non-zero exit code
+      if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
+        rc = int(status)
+      }
+    } else {
+      rc = 0
+    }
+  } else {
+    // Process did not exit properly
+    rc = 666
+  }
+
+  return rc
 }
 
 func handler(w http.ResponseWriter, r *http.Request, status Status) {
