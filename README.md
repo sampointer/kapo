@@ -49,7 +49,7 @@ Should the worker on any given node die the ELB will instruct the ASG to kill th
 A slightly less expensive variant that resurrects worker processes if it can is:
 
 ```bash
-$ kapo --interface 0.0.0.0 --port 6666 supervise --wait 30 -- ./worker.py --dowork myqueue
+$ kapo supervise --wait 30 -- ./worker.py --dowork myqueue
 ```
 
 A human or computer can query the state of workers:
