@@ -14,6 +14,7 @@ func CmdSupervise(c *cli.Context) error {
 		Command:   c.Args().First(),
 		Arguments: c.Args().Tail(),
 		Mode:      "supervise",
+		Wait:      wait,
 	}
 
 	process.Setup(c, &status)
