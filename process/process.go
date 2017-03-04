@@ -78,12 +78,12 @@ func Run(c *cli.Context) (int, string) {
 			}
 		} else {
 			rc = 0
-			exit = "stopped"
+			exit = "killed"
 		}
 	} else {
-		// Process did not exit properly
+		// Process exited properly
 		rc = 0
-		exit = "failed"
+		exit = "stopped"
 	}
 
 	return rc, exit
