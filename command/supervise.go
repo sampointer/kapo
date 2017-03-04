@@ -13,7 +13,6 @@ func CmdSupervise(c *cli.Context) error {
 	status := process.Status{
 		Command:   c.Args().First(),
 		Arguments: c.Args().Tail(),
-		Status:    "running",
 		Mode:      "supervise",
 	}
 
@@ -21,12 +20,10 @@ func CmdSupervise(c *cli.Context) error {
 
 	for {
 		status.StartTime = time.Now()
-		err := process.Run(c)
-
-		if err > 0 {
-			status.ExitCode = err
-			status.Status = "stopped"
-		}
+		status.Status = "running"
+		rc, exit := process.Run(c)
+		status.ExitCode = rc
+		status.Status = exit
 
 		time.Sleep(wait)
 	}
