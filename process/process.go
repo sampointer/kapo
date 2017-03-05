@@ -14,14 +14,15 @@ import (
 )
 
 type Status struct {
-	Command   string
 	Arguments []string
-	StartTime time.Time
-	TTL       time.Duration
-	Wait      time.Duration
-	Status    string
+	Command   string
+	EndTime   time.Time
 	ExitCode  int
 	Mode      string
+	StartTime time.Time
+	Status    string
+	TTL       time.Duration
+	Wait      time.Duration
 }
 
 func Setup(c *cli.Context, s *Status) error {

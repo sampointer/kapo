@@ -24,6 +24,7 @@ func CmdSupervise(c *cli.Context) error {
 		status.Status = "running"
 		status.ExitCode = 0
 		rc, exit := process.Run(c)
+		status.EndTime = time.Now()
 		status.ExitCode = rc
 		status.Status = exit
 
