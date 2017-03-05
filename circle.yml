@@ -1,4 +1,6 @@
+dependencies:
+  pre:
+    - gem install fpm --no-rdoc --no-ri
 test:
   post:
-    - gem install fpm --no-rdoc --no-ri
     - scripts/package.sh
