@@ -28,6 +28,8 @@ func CmdWatch(c *cli.Context) error {
 		log.Printf("Watching process %s without explicit PID", c.Args().First())
 	}
 
+	statuses = append(statuses, status)
+
 	for {
 		// If we're passed --pid find that explicit process
 		if c.Int("pid") > 0 {
@@ -70,7 +72,6 @@ func CmdWatch(c *cli.Context) error {
 
 						watched = append(watched, status)
 					}
-
 				}
 			}
 		}
