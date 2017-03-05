@@ -53,7 +53,13 @@ var Commands = []cli.Command{
 		Aliases: []string{"w"},
 		Usage:   "report status of an externally invoked process",
 		Action:  command.CmdWatch,
-		Flags:   []cli.Flag{},
+		Flags: []cli.Flag{
+			cli.IntFlag{
+				Name:  "wait, w",
+				Value: 5,
+				Usage: "seconds to wait between evaluating process list",
+			},
+		},
 	},
 }
 

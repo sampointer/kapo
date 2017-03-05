@@ -5,6 +5,7 @@ import (
 	"github.com/sampointer/kapo/process"
 	"gopkg.in/urfave/cli.v1"
 	"log"
+	"time"
 )
 
 func CmdWatch(c *cli.Context) error {
@@ -13,6 +14,7 @@ func CmdWatch(c *cli.Context) error {
 	var statuses []process.Status
 	var watched []process.Status
 
+	wait := time.Duration(c.Int("wait")) * time.Second
 	process.Setup(c, &statuses)
 
 	for {
@@ -30,6 +32,7 @@ func CmdWatch(c *cli.Context) error {
 					Command:   c.Args().First(),
 					Arguments: c.Args().Tail(),
 					Mode:      "supervise",
+					Wait:      wait,
 				}
 
 				watched = append(watched, status)
@@ -38,6 +41,7 @@ func CmdWatch(c *cli.Context) error {
 		}
 
 		statuses = watched
+		time.Sleep(wait)
 
 	}
 	return nil
