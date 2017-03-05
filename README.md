@@ -87,11 +87,9 @@ $ curl http://somehost:6666 2>/dev/null
 
 ## Install
 
-To install, use `go get`:
-
-```bash
-$ go get -d github.com/sampointer/kapo
-```
+* Binaries built for `amd_64`: [version 0.1.0][1]
+* Debian package: [version 0.1.0][2]
+* Go: `go install github.com/sampointer/kapo`
 
 ## Contribution
 
@@ -109,3 +107,6 @@ Keep A Port Open.
 ## Author
 
 [sampointer](https://github.com/sampointer)
+
+[1]: https://31-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.j2h2dDp/kapo
+[2]: https://31-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.j2h2dDp/kapo_0.1.0-31_amd64.deb
