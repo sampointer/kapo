@@ -32,11 +32,12 @@ func CmdWatch(c *cli.Context) error {
 			// Get matching processes
 			if p.Executable() == c.Args().First() {
 				status = process.Status{
-					Command:   c.Args().First(),
 					Arguments: c.Args().Tail(),
+					Command:   c.Args().First(),
 					Mode:      "supervise",
-					Wait:      wait,
 					StartTime: getstarttime(p.Pid()),
+					Wait:      wait,
+					Status:    "running",
 				}
 
 				watched = append(watched, status)
