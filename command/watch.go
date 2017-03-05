@@ -5,6 +5,9 @@ import (
 	"github.com/sampointer/kapo/process"
 	"gopkg.in/urfave/cli.v1"
 	"log"
+	"os"
+	"path"
+	"strconv"
 	"time"
 )
 
@@ -33,6 +36,7 @@ func CmdWatch(c *cli.Context) error {
 					Arguments: c.Args().Tail(),
 					Mode:      "supervise",
 					Wait:      wait,
+					StartTime: getstarttime(p.Pid()),
 				}
 
 				watched = append(watched, status)
@@ -45,4 +49,17 @@ func CmdWatch(c *cli.Context) error {
 
 	}
 	return nil
+}
+
+func getstarttime(pid int) time.Time {
+	var blanktime time.Time
+
+	proc_path := path.Join("/proc", strconv.Itoa(pid))
+	info, err := os.Stat(proc_path)
+
+	if err != nil {
+		return blanktime
+	} else {
+		return info.ModTime()
+	}
 }
