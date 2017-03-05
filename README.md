@@ -9,6 +9,8 @@ Examples might be:
 1. Allow queue workers to be monitored by your service discovery system
 1. Allow random shell scripts to present status to your container scheduler
 1. Abuse load balancers to route traffic based on an open port
+1. Expose the running status of configuration management tools
+1. Alert if a process fails too often
 
 When a program is executed under `kapo` a JSON-speaking HTTP server is started and the state of the process is reported to whomever requests it.
 
