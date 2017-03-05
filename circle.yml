@@ -1,5 +1,6 @@
 test:
   post:
+    - gem install fpm --no-rdoc --no-ri
     - scripts/package.sh
 
 general:
