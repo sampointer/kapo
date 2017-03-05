@@ -73,7 +73,7 @@ func Run(c *cli.Context) (int, string) {
 		if exiterr, ok := err.(*exec.ExitError); ok {
 			// Non-zero exit code
 			if status, ok := exiterr.Sys().(syscall.WaitStatus); ok {
-				rc = int(status)
+				rc = status.ExitStatus()
 				exit = "stopped"
 			}
 		} else {
