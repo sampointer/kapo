@@ -29,7 +29,8 @@ failing processes by continually restarting it them if they fail (with an option
 and start time on the status listener.
 
 The third, `watch`, is for use in tandem with your preferred process supervisor: it'll infer the state of the
-process from the process list of the operating system.
+process from the process list of the operating system. By default `watch` will match all processes in the process list that match the binary name
+given as the argument. Passing `--pid` limits the scope to just that process.
 
 The utility of all of this is probably best illustrated via some examples:
 
@@ -56,7 +57,7 @@ A human or computer can query the state of workers:
 
 ```bash
 $ curl http://localhost:6666 2>/dev/null
-{"Command":"worker.py","Arguments":["--dowork", "myqueue"],"StartTime":"2017-03-02T18:20:28.762060588Z","TTL":0,"Status":"running","ExitCode":0}
+[{"Arguments":["--dowork", "myqueue"],"Command":"./worker.py","EndTime":"0001-01-01T00:00:00Z","ExitCode":0,"Mode":"supervise","StartTime":"0001-01-01T00:00:00Z","Status":"running","TTL":0,"Wait":0}]
 ```
 
 #### As a Container `ENTRYPOINT` to inject random failure, exercise your scheduler's resilience and add TTLs to containers
@@ -76,10 +77,10 @@ ENTRYPOINT /bin/bash -c './kapo --interface 0.0.0.0 --port 6666 run --ttl $(($RA
 ```bash
 $ nohup kapo watch puppet &
 $ curl http://somehost:6666 2>/dev/null
-{"Command":"puppet","Arguments":[],"StartTime":"","TTL":0,"Status":"stopped","ExitCode":2}
+[{"Arguments":null,"Command":"puppet","EndTime":"0001-01-01T00:00:00Z","ExitCode":0,"Mode":"watch","StartTime":"0001-01-01T00:00:00Z","Status":"stopped","TTL":0,"Wait":5000000000}]
 $ sleep 300
 $ curl http://somehost:6666 2>/dev/null
-{"Command":"puppet","Arguments":["apply"],"StartTime":"2017-03-02T18:20:28.762060588Z","TTL":0,"Status":"running","ExitCode":0}
+[{"Arguments":null,"Command":"puppet","EndTime":"0001-01-01T00:00:00Z","ExitCode":0,"Mode":"watch","StartTime":"2017-03-02T18:20:28.762060588Z","Status":"running","TTL":0,"Wait":5000000000}]
 ```
 
 ## Install

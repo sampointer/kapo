@@ -13,8 +13,6 @@ import (
 
 func CmdWatch(c *cli.Context) error {
 
-	var proc_status string
-	var start_time time.Time
 	var status process.Status
 	var statuses []process.Status
 	var watched []process.Status
@@ -28,26 +26,22 @@ func CmdWatch(c *cli.Context) error {
 		log.Printf("Watching process %s without explicit PID", c.Args().First())
 	}
 
-	statuses = append(statuses, status)
-
 	for {
 		// If we're passed --pid find that explicit process
 		if c.Int("pid") > 0 {
+			status = process.Status{
+				Command: c.Args().First(),
+				Mode:    "watch",
+				Wait:    wait,
+			}
+
 			proc, _ := ps.FindProcess(c.Int("pid"))
 
 			if proc == nil {
-				proc_status = "stopped"
+				status.Status = "stopped"
 			} else {
-				proc_status = "running"
-				start_time = getstarttime(c.Int("pid"))
-			}
-
-			status = process.Status{
-				Command:   c.Args().First(),
-				Mode:      "watch",
-				StartTime: start_time,
-				Wait:      wait,
-				Status:    proc_status,
+				status.Status = "running"
+				status.StartTime = getstarttime(c.Int("pid"))
 			}
 
 			watched = nil
@@ -59,6 +53,7 @@ func CmdWatch(c *cli.Context) error {
 				log.Fatalf("Unable to obtain process list: %s", err)
 			} else {
 				watched = nil
+
 				for _, p := range procs {
 					// Get matching processes
 					if p.Executable() == c.Args().First() {
@@ -76,7 +71,20 @@ func CmdWatch(c *cli.Context) error {
 			}
 		}
 
-		statuses = watched
+		if len(watched) > 0 {
+			statuses = watched
+		} else {
+			status = process.Status{
+				Command: c.Args().First(),
+				Mode:    "watch",
+				Wait:    wait,
+				Status:  "stopped",
+			}
+
+			statuses = nil
+			statuses = append(statuses, status)
+		}
+
 		time.Sleep(wait)
 
 	}
