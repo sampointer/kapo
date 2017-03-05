@@ -25,7 +25,7 @@ type Status struct {
 	Wait      time.Duration
 }
 
-func Setup(c *cli.Context, s *Status) error {
+func Setup(c *cli.Context, s *[]Status) error {
 
 	// Start the status server in a gorountine
 	bindaddr := fmt.Sprintf("%s:%s", c.GlobalString("interface"), c.GlobalString("port"))
@@ -37,7 +37,7 @@ func Setup(c *cli.Context, s *Status) error {
 	return nil
 }
 
-func Run(c *cli.Context) (int, string) {
+func Run(c *cli.Context, modeverb string) (int, string) {
 
 	var ctx context.Context
 	var cancel context.CancelFunc
@@ -67,7 +67,7 @@ func Run(c *cli.Context) (int, string) {
 	if err != nil {
 		log.Fatal("failed to start %s %s", path, strings.Join(c.Args().Tail(), " "))
 	}
-	log.Printf("executing %s %s", path, strings.Join(c.Args().Tail(), " "))
+	log.Printf("%s %s %s", modeverb, path, strings.Join(c.Args().Tail(), " "))
 
 	// Report the supervised process's exit status
 	if err := cmd.Wait(); err != nil {
@@ -90,7 +90,7 @@ func Run(c *cli.Context) (int, string) {
 	return rc, exit
 }
 
-func handler(w http.ResponseWriter, r *http.Request, status Status) {
+func handler(w http.ResponseWriter, r *http.Request, status []Status) {
 	js, err := json.Marshal(status)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

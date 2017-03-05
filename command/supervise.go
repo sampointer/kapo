@@ -8,6 +8,7 @@ import (
 
 func CmdSupervise(c *cli.Context) error {
 
+	var statuses []process.Status
 	wait := time.Duration(c.Int("wait")) * time.Second
 
 	status := process.Status{
@@ -17,16 +18,18 @@ func CmdSupervise(c *cli.Context) error {
 		Wait:      wait,
 	}
 
-	process.Setup(c, &status)
+	statuses = append(statuses, status)
+
+	process.Setup(c, &statuses)
 
 	for {
-		status.StartTime = time.Now()
-		status.Status = "running"
-		status.ExitCode = 0
-		rc, exit := process.Run(c)
-		status.EndTime = time.Now()
-		status.ExitCode = rc
-		status.Status = exit
+		statuses[0].StartTime = time.Now()
+		statuses[0].Status = "running"
+		statuses[0].ExitCode = 0
+		rc, exit := process.Run(c, "supervising")
+		statuses[0].EndTime = time.Now()
+		statuses[0].ExitCode = rc
+		statuses[0].Status = exit
 
 		time.Sleep(wait)
 	}
