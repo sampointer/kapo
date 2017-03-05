@@ -21,3 +21,8 @@ for package_type in deb ; do
     --prefix /usr/local/bin \
     kapo
 done
+
+if [[ ${CIRCLE_ARTIFACTS} ]]; then
+  cp kapo ${CIRCLE_ARTIFACTS}
+  cp kapo*.deb ${CIRCLE_ARTIFACTS}
+fi
