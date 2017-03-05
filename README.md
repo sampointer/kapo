@@ -26,8 +26,8 @@ selective actions based on the state reported therein.
 
 The first is the most useful as a container `ENTRYPOINT`, especially in tandem with the `--ttl` flag to inject some chaos.
 
-The second will prop up
-failing processes by continually restarting it them if they fail (with an optional wait interval), reporting interesting facts like the last return code
+The second will prop up a
+failing process by continually restarting it if it fails (with an optional wait interval), reporting interesting facts like the last return code
 and start time on the status listener.
 
 The third, `watch`, is for use in tandem with your preferred process supervisor: it'll infer the state of the
