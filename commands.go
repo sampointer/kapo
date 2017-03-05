@@ -59,6 +59,11 @@ var Commands = []cli.Command{
 				Value: 5,
 				Usage: "seconds to wait between evaluating process list",
 			},
+			cli.IntFlag{
+				Name:  "pid, p",
+				Value: 0,
+				Usage: "limit watched process to a single pid",
+			},
 		},
 	},
 }
