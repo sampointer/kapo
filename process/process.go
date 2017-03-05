@@ -91,7 +91,14 @@ func Run(c *cli.Context, modeverb string) (int, string) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request, status []Status) {
-	js, err := json.Marshal(status)
+	var err error
+	var js []byte
+
+	if len(status) > 0 {
+		js, err = json.Marshal(status)
+	} else {
+		js, err = []byte(""), nil
+	}
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
