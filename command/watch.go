@@ -1,7 +1,7 @@
 package command
 
 import (
-	"github.com/sampointer/go-ps"
+	"github.com/mitchellh/go-ps"
 	"github.com/sampointer/kapo/process"
 	"gopkg.in/urfave/cli.v1"
 	"log"
