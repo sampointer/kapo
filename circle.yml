@@ -1,6 +1,7 @@
+post:
+  - scripts/package.sh
+
 general:
-  post:
-    - scripts/package.sh
   artifacts:
     - kapo
     - kapo*.deb
