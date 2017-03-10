@@ -3,8 +3,8 @@ package command
 import (
 	"github.com/mitchellh/go-ps"
 	"github.com/sampointer/kapo/process"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/urfave/cli.v1"
-	"log"
 	"os"
 	"path"
 	"strconv"
