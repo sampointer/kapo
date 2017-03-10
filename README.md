@@ -108,5 +108,5 @@ Keep A Port Open.
 
 [sampointer](https://github.com/sampointer)
 
-[1]: https://31-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.j2h2dDp/kapo
-[2]: https://31-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.j2h2dDp/kapo_0.1.0-31_amd64.deb
+[1]: https://39-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.O63Zk2s/kapo
+[2]: https://39-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.O63Zk2s/kapo_0.1.1-39_amd64.deb
