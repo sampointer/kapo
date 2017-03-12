@@ -4,13 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"gopkg.in/urfave/cli.v1"
 	"net/http"
 	"os/exec"
 	"strings"
 	"syscall"
 	"time"
+	log "github.com/sirupsen/logrus"
+  _ "expvar"
 )
 
 type Status struct {
