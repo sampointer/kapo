@@ -87,8 +87,8 @@ $ curl http://somehost:6666 2>/dev/null
 
 ## Install
 
-* Binaries built for `amd_64`: [version 0.1.1][1]
-* Debian package: [version 0.1.1][2]
+* Binaries built for `amd_64`: [version 0.1.2][1]
+* Debian package: [version 0.1.2][2]
 * Go: `go install github.com/sampointer/kapo`
 
 ## Contribution
