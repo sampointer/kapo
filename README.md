@@ -1,4 +1,4 @@
-# Kapo [![Circle CI](https://circleci.com/gh/sampointer/kapo.svg?style=shield)](https://circleci.com/gh/sampointer/kapo) ![goreport](https://goreportcard.com/badge/github.com/sampointer/kapo) [![GoDoc](https://godoc.org/github.com/sampointer/kapo?status.svg)](https://godoc.org/github.com/sampointer/kapo) <img align="right" src="/assets/ganster-small.png" alt="ganster-small" />
+# Kapo [![Circle CI](https://circleci.com/gh/sampointer/kapo.svg?style=shield)](https://circleci.com/gh/sampointer/kapo) [![Go Report Card](https://goreportcard.com/badge/github.com/sampointer/kapo)](https://goreportcard.com/report/github.com/sampointer/kapo) [![GoDoc](https://godoc.org/github.com/sampointer/kapo?status.svg)](https://godoc.org/github.com/sampointer/kapo) <img align="right" src="/assets/ganster-small.png" alt="ganster-small" />
 Wrap any command in a status socket.
 
 
