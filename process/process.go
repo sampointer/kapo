@@ -3,15 +3,15 @@ package process
 import (
 	"context"
 	"encoding/json"
+	_ "expvar"
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/urfave/cli.v1"
 	"net/http"
 	"os/exec"
 	"strings"
 	"syscall"
 	"time"
-	log "github.com/sirupsen/logrus"
-  _ "expvar"
 )
 
 type Status struct {
@@ -57,7 +57,7 @@ func Run(c *cli.Context, modeverb string) (int, string) {
 		ttl = time.Duration(c.Int("ttl")) * time.Second
 		ctx, cancel = context.WithTimeout(context.Background(), ttl)
 		defer cancel()
-		log.Printf("stopping execution after %ss TTL expires", ttl)
+		log.Printf("stopping execution after %s TTL expires", ttl)
 	} else {
 		ctx = context.Background()
 	}
