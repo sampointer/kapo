@@ -8,6 +8,7 @@ import (
 	"gopkg.in/urfave/cli.v1"
 )
 
+//GLobalFlags: global flags
 var GlobalFlags = []cli.Flag{
 	cli.StringFlag{
 		Name:   "port, p",
@@ -23,6 +24,7 @@ var GlobalFlags = []cli.Flag{
 	},
 }
 
+//Commands: subcommands
 var Commands = []cli.Command{
 	{
 		Name:    "run",
@@ -74,6 +76,7 @@ var Commands = []cli.Command{
 	},
 }
 
+//CommandNotFound: invoked when an invalid subcommand is passed
 func CommandNotFound(c *cli.Context, command string) {
 	fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.\n", c.App.Name, command, c.App.Name, c.App.Name)
 	os.Exit(2)

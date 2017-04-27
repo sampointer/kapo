@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+//CmdWatch: look at the state of a process in the process list
 func CmdWatch(c *cli.Context) error {
 
 	var status process.Status
@@ -93,12 +94,11 @@ func CmdWatch(c *cli.Context) error {
 func getstarttime(pid int) time.Time {
 	var blanktime time.Time
 
-	proc_path := path.Join("/proc", strconv.Itoa(pid))
-	info, err := os.Stat(proc_path)
+	procPath := path.Join("/proc", strconv.Itoa(pid))
+	info, err := os.Stat(procPath)
 
 	if err != nil {
 		return blanktime
-	} else {
-		return info.ModTime()
 	}
+	return info.ModTime()
 }
