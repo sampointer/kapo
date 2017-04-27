@@ -88,7 +88,6 @@ func CmdWatch(c *cli.Context) error {
 		time.Sleep(wait)
 
 	}
-	return nil
 }
 
 func getstarttime(pid int) time.Time {

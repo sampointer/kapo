@@ -34,5 +34,4 @@ func CmdSupervise(c *cli.Context) error {
 		time.Sleep(wait)
 	}
 
-	return nil
 }
