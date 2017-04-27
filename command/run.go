@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+//CmdRun: run a process until exit
 func CmdRun(c *cli.Context) error {
 
 	var statuses []process.Status
