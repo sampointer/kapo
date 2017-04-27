@@ -85,7 +85,18 @@ $ curl http://somehost:6666 2>/dev/null
 [{"Arguments":null,"Command":"puppet","EndTime":"0001-01-01T00:00:00Z","ExitCode":0,"Mode":"watch","StartTime":"2017-03-02T18:20:28.762060588Z","Status":"running","TTL":0,"Wait":5000000000}]
 ```
 
-### Expvar
+## Configuration
+### Environment Variables
+Switch arguments can be configured by setting an appropriately named environment
+variable:
+
+* KAPO_PORT
+* KAPO_INTERFACE
+* KAPO_TTL
+* KAPO_WAIT
+* KAPO_WATCHPID
+
+## Expvar
 The listener exposes basic runtime metrics via [expvar](https://golang.org/pkg/expvar/) for use with [expvarmon](https://github.com/divan/expvarmon).
 
 ## Install

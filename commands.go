@@ -10,14 +10,16 @@ import (
 
 var GlobalFlags = []cli.Flag{
 	cli.StringFlag{
-		Name:  "port, p",
-		Value: "6666",
-		Usage: "port to listen on `PORT`",
+		Name:   "port, p",
+		Value:  "6666",
+		Usage:  "port to listen on `PORT`",
+		EnvVar: "KAPO_PORT",
 	},
 	cli.StringFlag{
-		Name:  "interface, i",
-		Value: "0.0.0.0",
-		Usage: "bind to interface `IP`",
+		Name:   "interface, i",
+		Value:  "0.0.0.0",
+		Usage:  "bind to interface `IP`",
+		EnvVar: "KAPO_INTERFACE",
 	},
 }
 
@@ -29,9 +31,10 @@ var Commands = []cli.Command{
 		Action:  command.CmdRun,
 		Flags: []cli.Flag{
 			cli.IntFlag{
-				Name:  "ttl, t",
-				Value: 0,
-				Usage: "Stop execution after `SECOND` seconds",
+				Name:   "ttl, t",
+				Value:  0,
+				Usage:  "Stop execution after `SECOND` seconds",
+				EnvVar: "KAPO_TTL",
 			},
 		},
 	},
@@ -42,9 +45,10 @@ var Commands = []cli.Command{
 		Action:  command.CmdSupervise,
 		Flags: []cli.Flag{
 			cli.IntFlag{
-				Name:  "wait, w",
-				Value: 5,
-				Usage: "seconds to wait between restarts",
+				Name:   "wait, w",
+				Value:  5,
+				Usage:  "seconds to wait between restarts",
+				EnvVar: "KAPO_WAIT",
 			},
 		},
 	},
@@ -55,14 +59,16 @@ var Commands = []cli.Command{
 		Action:  command.CmdWatch,
 		Flags: []cli.Flag{
 			cli.IntFlag{
-				Name:  "wait, w",
-				Value: 5,
-				Usage: "seconds to wait between evaluating process list",
+				Name:   "wait, w",
+				Value:  5,
+				Usage:  "seconds to wait between evaluating process list",
+				EnvVar: "KAPO_WAIT",
 			},
 			cli.IntFlag{
-				Name:  "pid, p",
-				Value: 0,
-				Usage: "limit watched process to a single pid",
+				Name:   "pid, p",
+				Value:  0,
+				Usage:  "limit watched process to a single pid",
+				EnvVar: "KAPO_WATCHPID",
 			},
 		},
 	},
