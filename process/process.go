@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-//Status: the status of a process
+//Status is the status of a process
 type Status struct {
 	Arguments []string
 	Command   string
@@ -28,7 +28,7 @@ type Status struct {
 	Wait      time.Duration
 }
 
-//Setup: start the HTTP listener
+//Setup starts the HTTP listener
 func Setup(c *cli.Context, s *[]Status) error {
 
 	// Start the status server in a gorountine
@@ -41,7 +41,7 @@ func Setup(c *cli.Context, s *[]Status) error {
 	return nil
 }
 
-//Run: invoke the process using a given mode
+//Run invokes the process using a given mode
 func Run(c *cli.Context, modeverb string) (int, string) {
 
 	var ctx context.Context

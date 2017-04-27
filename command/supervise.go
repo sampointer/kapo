@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-//CmdSupervise: run a process and restart it upon failure
+//CmdSupervise runs a process and restart it upon failure
 func CmdSupervise(c *cli.Context) error {
 
 	var statuses []process.Status

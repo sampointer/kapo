@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-//CmdWatch: look at the state of a process in the process list
+//CmdWatch looks at the state of a process in the process list
 func CmdWatch(c *cli.Context) error {
 
 	var status process.Status
