@@ -90,19 +90,19 @@ $ curl http://somehost:6666 2>/dev/null
 Switch arguments can be configured by setting an appropriately named environment
 variable:
 
-* KAPO_PORT
-* KAPO_INTERFACE
-* KAPO_TTL
-* KAPO_WAIT
-* KAPO_WATCHPID
+* `KAPO_PORT`
+* `KAPO_INTERFACE`
+* `KAPO_TTL`
+* `KAPO_WAIT`
+* `KAPO_WATCHPID`
 
 ## Expvar
 The listener exposes basic runtime metrics via [expvar](https://golang.org/pkg/expvar/) for use with [expvarmon](https://github.com/divan/expvarmon).
 
 ## Install
 
-* Binaries built for `amd_64`: [version 0.1.2][1]
-* Debian package: [version 0.1.2][2]
+* Binaries built for `amd_64`: [version 0.2.0][1]
+* Debian package: [version 0.2.0][2]
 * Go: `go install github.com/sampointer/kapo`
 
 ## Contribution
