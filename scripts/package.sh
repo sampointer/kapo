@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/bin/bash -x
 if [[ ${CIRCLE_BUILD_NUM} ]]; then
   iteration=${CIRCLE_BUILD_NUM}
 else
   iteration=0
 fi
 
-for package_type in deb ; do
+for package_type in deb rpm; do
   fpm -t ${package_type} \
     -s dir \
     --name kapo \
@@ -20,9 +20,10 @@ for package_type in deb ; do
     --url "https://github.com/sampointer/kapo" \
     --prefix /usr/local/bin \
     kapo
+
+    if [[ ${CIRCLE_ARTIFACTS} ]]; then
+      cp kapo ${CIRCLE_ARTIFACTS}
+      cp kapo*.${package_type} ${CIRCLE_ARTIFACTS}
+    fi
 done
 
-if [[ ${CIRCLE_ARTIFACTS} ]]; then
-  cp kapo ${CIRCLE_ARTIFACTS}
-  cp kapo*.deb ${CIRCLE_ARTIFACTS}
-fi
