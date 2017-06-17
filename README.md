@@ -125,4 +125,4 @@ Keep A Port Open.
 
 [1]: https://48-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.4CNMru1/kapo
 [2]: https://48-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.4CNMru1/kapo_0.2.0-48_amd64.deb
-[3]:
+[3]: https://68-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.jQtbPCP/kapo-0.2.0-68.x86_64.rpm
