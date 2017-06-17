@@ -1,6 +1,7 @@
 dependencies:
   pre:
     - gem install fpm --no-rdoc --no-ri
+    - sudo apt-get install rpm -f -y
 test:
   post:
     - scripts/package.sh
