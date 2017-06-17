@@ -20,9 +20,10 @@ for package_type in deb rpm; do
     --url "https://github.com/sampointer/kapo" \
     --prefix /usr/local/bin \
     kapo
+
+    if [[ ${CIRCLE_ARTIFACTS} ]]; then
+      cp kapo ${CIRCLE_ARTIFACTS}
+      cp kapo*.${package_type} ${CIRCLE_ARTIFACTS}
+    fi
 done
 
-if [[ ${CIRCLE_ARTIFACTS} ]]; then
-  cp kapo ${CIRCLE_ARTIFACTS}
-  cp kapo*.${package_type} ${CIRCLE_ARTIFACTS}
-fi
