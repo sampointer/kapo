@@ -11,6 +11,7 @@ Examples might be:
 1. Abuse load balancers to route traffic based on an open port
 1. Expose the running status of configuration management tools
 1. Alert if a process fails too often
+1. Start and monitor non-networked programs on-demand using [systemd socket activation][#socket-activation]
 
 When a program is executed under `kapo` a JSON-speaking HTTP server is started and the state of the process is reported to whomever requests it.
 
@@ -26,9 +27,7 @@ selective actions based on the state reported therein.
 
 The first is the most useful as a container `ENTRYPOINT`, especially in tandem with the `--ttl` flag to inject some chaos.
 
-The second will prop up a
-failing process by continually restarting it if it fails (with an optional wait interval), reporting interesting facts like the last return code
-and start time on the status listener.
+The second will prop up a failing process by continually restarting it if it fails (with an optional wait interval), reporting interesting facts like the last return code and start time on the status listener.
 
 The third, `watch`, is for use in tandem with your preferred process supervisor: it'll infer the state of the
 process from the process list of the operating system. By default `watch` will match all processes in the process list that match the binary name
@@ -85,6 +84,42 @@ $ curl http://somehost:6666 2>/dev/null
 [{"Arguments":null,"Command":"puppet","EndTime":"0001-01-01T00:00:00Z","ExitCode":0,"Mode":"watch","StartTime":"2017-03-02T18:20:28.762060588Z","Status":"running","TTL":0,"Wait":5000000000}]
 ```
 
+## Socket Activation
+Kapo can listen for connections via [systemd socket activation](http://0pointer.de/blog/projects/socket-activation.html) by passing the global option `--socket-activation` (or setting `KAPO_SOCKET_ACTIVATION`) and configuring systemd as appropriate. When `--socket-activation` is passed any configured interface or port is ignored.
+
+There are a number of interesting use-cases for this functionality, including but not limited to starting and inspecting the status of non-networked programs and scripts on-demand upon receipt of a TCP connection, using `run` mode:
+
+```
+# useful.service
+[Unit]
+Description=Most Useful Script
+Requires=network.target
+After=multi-user.target
+
+[Service]
+Type=notify # required to enable the HTTP handler to notify dbus
+ExecStart=/usr/local/bin/kapo --socket-activation run /usr/local/bin/useful.sh
+NonBlocking=true
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```
+# useful.socket
+[Socket]
+ListenStream=0.0.0.0:6666
+
+[Install]
+WantedBy=sockets.target
+```
+
+```bash
+$ systemctl enable useful.socket
+$ systemctl start useful.socket
+$ systemctl enable useful.service # But not started on boot
+```
+
 ## Configuration
 ### Environment Variables
 Switch arguments can be configured by setting an appropriately named environment
@@ -92,6 +127,7 @@ variable:
 
 * `KAPO_PORT`
 * `KAPO_INTERFACE`
+* `KAPO_SOCKET_ACTIVATION`
 * `KAPO_TTL`
 * `KAPO_WAIT`
 * `KAPO_WATCHPID`

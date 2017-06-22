@@ -1,3 +1,4 @@
+github.com/coreos/go-systemd 24036eb3df68550d24a2736c5d013f4e83366866
 github.com/mitchellh/go-ps e2d21980687ce16e58469d98dcee92d27fbbd7fb
 github.com/sirupsen/logrus 1deb2db2a6fff8a35532079061b903c3a25eed52
 gopkg.in/urfave/cli.v1 0bdeddeeb0f650497d603c4ad7b20cfe685682f6

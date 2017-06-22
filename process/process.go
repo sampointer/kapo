@@ -6,6 +6,8 @@ import (
 	//Blank import just to gain the default internal metrics
 	_ "expvar"
 	"fmt"
+	"github.com/coreos/go-systemd/activation"
+	"github.com/coreos/go-systemd/daemon"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/urfave/cli.v1"
 	"net/http"
@@ -15,7 +17,7 @@ import (
 	"time"
 )
 
-//Status is the status of a process
+// Status is the status of a process
 type Status struct {
 	Arguments []string
 	Command   string
@@ -28,20 +30,35 @@ type Status struct {
 	Wait      time.Duration
 }
 
-//Setup starts the HTTP listener
+// Setup starts the HTTP listener
 func Setup(c *cli.Context, s *[]Status) error {
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { handler(w, r, *s) })
 
 	// Start the status server in a gorountine
-	bindaddr := fmt.Sprintf("%s:%s", c.GlobalString("interface"), c.GlobalString("port"))
-	log.Printf("binding to %s", bindaddr)
+	if c.GlobalBool("socket-activation") {
+		listeners, err := activation.Listeners(true)
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { handler(w, r, *s) })
-	go http.ListenAndServe(bindaddr, nil)
+		if err != nil {
+			panic(err)
+		}
+
+		if len(listeners) != 1 {
+			panic("Unexpected number of socket activation fds")
+		}
+
+		log.Printf("using socket activation")
+		go http.Serve(listeners[0], nil)
+		daemon.SdNotify(false, "READY=1")
+	} else {
+		bindaddr := fmt.Sprintf("%s:%s", c.GlobalString("interface"), c.GlobalString("port"))
+		log.Printf("binding to %s", bindaddr)
+		go http.ListenAndServe(bindaddr, nil)
+	}
 
 	return nil
 }
 
-//Run invokes the process using a given mode
+// Run invokes the process using a given mode
 func Run(c *cli.Context, modeverb string) (int, string) {
 
 	var ctx context.Context

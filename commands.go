@@ -22,6 +22,11 @@ var GlobalFlags = []cli.Flag{
 		Usage:  "bind to interface `IP`",
 		EnvVar: "KAPO_INTERFACE",
 	},
+	cli.BoolFlag{
+		Name:   "socket-activation, s",
+		Usage:  "use systemd socket activation",
+		EnvVar: "KAPO_SOCKET_ACTIVATION",
+	},
 }
 
 //Commands defines subcommands
