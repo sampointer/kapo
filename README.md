@@ -11,7 +11,7 @@ Examples might be:
 1. Abuse load balancers to route traffic based on an open port
 1. Expose the running status of configuration management tools
 1. Alert if a process fails too often
-1. Start and monitor non-networked programs on-demand using [systemd socket activation][#socket-activation]
+1. Start and monitor non-networked programs on-demand using [systemd socket activation](https://github.com/sampointer/kapo#socket-activation)
 
 When a program is executed under `kapo` a JSON-speaking HTTP server is started and the state of the process is reported to whomever requests it.
 
