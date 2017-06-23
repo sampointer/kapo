@@ -19,7 +19,7 @@ func CmdWatch(c *cli.Context) error {
 	var watched []process.Status
 
 	wait := time.Duration(c.Int("wait")) * time.Second
-	process.Setup(c, &statuses)
+	sidebind_port, _ := process.Setup(c, &statuses)
 
 	if c.Int("pid") > 0 {
 		log.Printf("Watching process %s with PID %d", c.Args().First(), c.Int("pid"))
@@ -31,9 +31,10 @@ func CmdWatch(c *cli.Context) error {
 		// If we're passed --pid find that explicit process
 		if c.Int("pid") > 0 {
 			status = process.Status{
-				Command: c.Args().First(),
-				Mode:    "watch",
-				Wait:    wait,
+				Command:      c.Args().First(),
+				Mode:         "watch",
+				SidebindPort: sidebind_port,
+				Wait:         wait,
 			}
 
 			proc, _ := ps.FindProcess(c.Int("pid"))
@@ -59,11 +60,12 @@ func CmdWatch(c *cli.Context) error {
 					// Get matching processes
 					if p.Executable() == c.Args().First() {
 						status = process.Status{
-							Command:   c.Args().First(),
-							Mode:      "watch",
-							StartTime: getstarttime(p.Pid()),
-							Wait:      wait,
-							Status:    "running",
+							Command:      c.Args().First(),
+							Mode:         "watch",
+							SidebindPort: sidebind_port,
+							StartTime:    getstarttime(p.Pid()),
+							Status:       "running",
+							Wait:         wait,
 						}
 
 						watched = append(watched, status)

@@ -21,9 +21,10 @@ func CmdSupervise(c *cli.Context) error {
 
 	statuses = append(statuses, status)
 
-	process.Setup(c, &statuses)
+	sidebind_port, _ := process.Setup(c, &statuses)
 
 	for {
+		statuses[0].SidebindPort = sidebind_port
 		statuses[0].StartTime = time.Now()
 		statuses[0].Status = "running"
 		statuses[0].ExitCode = 0

@@ -10,9 +10,9 @@ import (
 
 //GlobalFlags defines global flags
 var GlobalFlags = []cli.Flag{
-	cli.StringFlag{
+	cli.Uint64Flag{
 		Name:   "port, p",
-		Value:  "6666",
+		Value:  6666,
 		Usage:  "port to listen on `PORT`",
 		EnvVar: "KAPO_PORT",
 	},
@@ -21,6 +21,11 @@ var GlobalFlags = []cli.Flag{
 		Value:  "0.0.0.0",
 		Usage:  "bind to interface `IP`",
 		EnvVar: "KAPO_INTERFACE",
+	},
+	cli.BoolFlag{
+		Name:   "sidebind, b",
+		Usage:  "also bind to the next highest available port",
+		EnvVar: "KAPO_SIDEBIND",
 	},
 	cli.BoolFlag{
 		Name:   "socket-activation, s",
