@@ -85,9 +85,11 @@ $ curl http://somehost:6666 2>/dev/null
 ```
 
 ## Socket Activation
-Kapo can listen for connections via [systemd socket activation](http://0pointer.de/blog/projects/socket-activation.html) by passing the global option `--socket-activation` (or setting `KAPO_SOCKET_ACTIVATION`) and configuring systemd as appropriate. When `--socket-activation` is passed any configured interface or port is ignored.
+Kapo can listen for connections via [systemd socket activation](http://0pointer.de/blog/projects/socket-activation.html) by passing the global option `--socket-activation` (or setting `KAPO_SOCKET_ACTIVATION`) and configuring systemd as appropriate.
 
-There are a number of interesting use-cases for this functionality, including but not limited to starting and inspecting the status of non-networked programs and scripts on-demand upon receipt of a TCP connection, using `run` mode:
+When `--socket-activation` is passed any configured interface or port is ignored for the purposes of binding. The `--sidebind` global option will attempt to bind a second listener to the incrementing values above `--port` on `--interface` until it is successful.
+
+There are a number of interesting use-cases for this functionality, including but not limited to starting and inspecting the status of non-networked programs and scripts on-demand upon receipt of a TCP connection, using `run` mode and `--sidebind`.
 
 ```
 # useful.service
@@ -98,7 +100,7 @@ After=multi-user.target
 
 [Service]
 Type=notify # required to enable the HTTP handler to notify dbus
-ExecStart=/usr/local/bin/kapo --socket-activation run /usr/local/bin/useful.sh
+ExecStart=/usr/local/bin/kapo --socket-activation --sidebind run /usr/local/bin/useful.sh
 NonBlocking=true
 
 [Install]
@@ -119,6 +121,16 @@ $ systemctl enable useful.socket
 $ systemctl start useful.socket
 $ systemctl enable useful.service # But not started on boot
 ```
+
+One can then `curl http://localhost:6666` to have systemd start an instance
+of `useful.sh`. The connection to the socket will remain open for the duration
+of the execution of the process. We'll receive a status structure:
+
+```
+[{"Arguments":null,"Command":"/usr/local/bin/useful.sh","EndTime":"0001-01-01T00:00:00Z","ExitCode":0,"Mode":"run","StartTime":"2017-03-02T18:20:28.762060588Z","Status":"running","TTL":0,"SidebindPort": 6667, "Wait":5000000000}]
+```
+
+If we wanted to get a further update on the execution status of this process we cannot, of course, `curl http://localhost:6666` as this was start _another_ instance of the service. Instead we can see from the initial call above that we have a `SidebindPort` returned on which `kapo` has started another listener, by virtue of us passing `--sidebind`. We can interrogate this to our heart's content. If we _were_ to start another instance of the service whilst the original one was still executing we'd be returned a different `SidebindPort` by that instance.
 
 ## Configuration
 ### Environment Variables

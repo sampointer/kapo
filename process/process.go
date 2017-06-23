@@ -10,8 +10,10 @@ import (
 	"github.com/coreos/go-systemd/daemon"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/urfave/cli.v1"
+	"net"
 	"net/http"
 	"os/exec"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -19,23 +21,25 @@ import (
 
 // Status is the status of a process
 type Status struct {
-	Arguments []string
-	Command   string
-	EndTime   time.Time
-	ExitCode  int
-	Mode      string
-	StartTime time.Time
-	Status    string
-	TTL       time.Duration
-	Wait      time.Duration
+	Arguments    []string
+	Command      string
+	EndTime      time.Time
+	ExitCode     int
+	Mode         string
+	SidebindPort uint16
+	StartTime    time.Time
+	Status       string
+	TTL          time.Duration
+	Wait         time.Duration
 }
 
-// Setup starts the HTTP listener
-func Setup(c *cli.Context, s *[]Status) error {
+// Start the HTTP listener
+func Setup(c *cli.Context, s *[]Status) (uint16, error) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { handler(w, r, *s) })
 
 	// Start the status server in a gorountine
 	if c.GlobalBool("socket-activation") {
+		// Expect listeners from systemd socket activation
 		listeners, err := activation.Listeners(true)
 
 		if err != nil {
@@ -50,12 +54,32 @@ func Setup(c *cli.Context, s *[]Status) error {
 		go http.Serve(listeners[0], nil)
 		daemon.SdNotify(false, "READY=1")
 	} else {
-		bindaddr := fmt.Sprintf("%s:%s", c.GlobalString("interface"), c.GlobalString("port"))
+		// Bind conventionally otherwise
+		bindaddr := interfaceandport(c.GlobalString("interface"), uint16(c.GlobalInt64("port")))
 		log.Printf("binding to %s", bindaddr)
 		go http.ListenAndServe(bindaddr, nil)
 	}
 
-	return nil
+	// If we've been asked to sidebind locate the next highest
+	// available port and bind a listener to that, too.
+	if c.GlobalBool("sidebind") {
+		sidebind_port := uint16(c.GlobalInt64("port"))
+		for {
+			sidebind_port++
+			log.Printf("attempting sidebinding to %d", sidebind_port)
+			listen, err := net.Listen("tcp", fmt.Sprintf(":%d", sidebind_port))
+			if err == nil {
+				// Available port found, bind to it
+				listen.Close()
+				bindaddr := interfaceandport(c.GlobalString("interface"), sidebind_port)
+				go http.ListenAndServe(bindaddr, nil)
+				log.Printf("sidebinding to %s", bindaddr)
+				return sidebind_port, nil
+			}
+		}
+	}
+
+	return 0, nil
 }
 
 // Run invokes the process using a given mode
@@ -128,4 +152,9 @@ func handler(w http.ResponseWriter, r *http.Request, status []Status) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(js)
+}
+
+// Given an interface and a port, return interface:port
+func interfaceandport(i string, p uint16) string {
+	return fmt.Sprintf("%s:%s", i, strconv.FormatUint(uint64(p), 10))
 }
