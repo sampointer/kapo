@@ -149,9 +149,9 @@ The listener exposes basic runtime metrics via [expvar](https://golang.org/pkg/e
 
 ## Install
 
-* Binaries built for `amd_64`: [version 0.3.0][1]
-* Debian package: [version 0.3.0][2]
-* rpm package: [version 0.3.0][3]
+* Binaries built for `amd_64`: [version 0.4.0][1]
+* Debian package: [version 0.4.0][2]
+* rpm package: [version 0.4.0][3]
 * Go: `go install github.com/sampointer/kapo`
 
 ## Contribution
@@ -171,6 +171,6 @@ Keep A Port Open.
 
 [sampointer](https://github.com/sampointer)
 
-[1]: https://75-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.bAyEQwd/kapo
-[2]: https://75-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.bAyEQwd/kapo_0.3.0-75_amd64.deb
-[3]: https://75-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.bAyEQwd/kapo-0.3.0-75.x86_64.rpm
+[1]: https://82-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.huBFNc5/kapo
+[2]: https://82-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.huBFNc5/kapo_0.4.0-82_amd64.deb
+[3]: https://82-83670015-gh.circle-artifacts.com/0/tmp/circle-artifacts.huBFNc5/kapo-0.4.0-82.x86_64.rpm
