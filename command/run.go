@@ -18,6 +18,7 @@ func CmdRun(c *cli.Context) error {
 		Status:    "running",
 		Mode:      "run",
 		TTL:       time.Duration(c.Int("ttl")),
+		Wait:      wait,
 	}
 
 	statuses = append(statuses, status)

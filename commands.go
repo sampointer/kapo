@@ -51,7 +51,7 @@ var Commands = []cli.Command{
 			cli.IntFlag{
 				Name:   "wait, w",
 				Value:  0,
-				Usage:  "seconds to wait after termination",
+				Usage:  "report status for `SECOND` seconds after termination",
 				EnvVar: "KAPO_WAIT",
 			},
 		},
