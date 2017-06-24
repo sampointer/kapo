@@ -10,6 +10,7 @@ import (
 func CmdRun(c *cli.Context) error {
 
 	var statuses []process.Status
+	wait := time.Duration(c.Int("wait")) * time.Second
 
 	status := process.Status{
 		Command:   c.Args().First(),
@@ -25,7 +26,10 @@ func CmdRun(c *cli.Context) error {
 
 	statuses[0].SidebindPort = sidebind_port
 	statuses[0].StartTime = time.Now()
-	_, _ = process.Run(c, "running")
+	statuses[0].ExitCode, statuses[0].Status = process.Run(c, "running")
+	statuses[0].EndTime = time.Now()
+
+	time.Sleep(wait)
 
 	return nil
 }
