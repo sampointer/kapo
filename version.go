@@ -4,4 +4,4 @@ package main
 const Name string = "kapo"
 
 //Version is the version of the software
-const Version string = "0.4.0"
+const Version string = "0.5.0"
