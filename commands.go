@@ -45,8 +45,14 @@ var Commands = []cli.Command{
 			cli.IntFlag{
 				Name:   "ttl, t",
 				Value:  0,
-				Usage:  "Stop execution after `SECOND` seconds",
+				Usage:  "stop execution after `SECOND` seconds",
 				EnvVar: "KAPO_TTL",
+			},
+			cli.IntFlag{
+				Name:   "wait, w",
+				Value:  0,
+				Usage:  "report status for `SECOND` seconds after termination",
+				EnvVar: "KAPO_WAIT",
 			},
 		},
 	},
