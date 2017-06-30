@@ -32,6 +32,21 @@ var GlobalFlags = []cli.Flag{
 		Usage:  "use systemd socket activation",
 		EnvVar: "KAPO_SOCKET_ACTIVATION",
 	},
+	cli.BoolFlag{
+		Name:   "stdout, S",
+		Usage:  "capture supervised process STDOUT",
+		EnvVar: "KAPO_STDOUT",
+	},
+	cli.BoolFlag{
+		Name:   "stderr, E",
+		Usage:  "capture supervised process STDERR",
+		EnvVar: "KAPO_STDERR",
+	},
+	cli.BoolFlag{
+		Name:   "stdlog, L",
+		Usage:  "emit STDOUT/STDERR as Kapo timestamped logs, rather than raw",
+		EnvVar: "KAPO_STDLOG",
+	},
 }
 
 //Commands defines subcommands

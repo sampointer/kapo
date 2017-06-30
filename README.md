@@ -141,9 +141,17 @@ variable:
 * `KAPO_INTERFACE`
 * `KAPO_SIDEBIND`
 * `KAPO_SOCKET_ACTIVATION`
+* `KAPO_STDOUT`
+* `KAPO_STDERR`
+* `KAPO_STDLOG`
 * `KAPO_TTL`
 * `KAPO_WAIT`
 * `KAPO_WATCHPID`
+
+### Capturing STDOUT and STDERR
+Many container execution environments implement logging by capturing the `STDOUT` and `STDERR` of the process executing in the container. By passing the global options `--stdout` and `--stderr` one may capture fds 1 and 2 from the supervised process and echo them up to whatever is in turn executing Kapo.
+
+Passing the `--stdlog` flag alongside one or both of these options causes Kapo to emit each line read as a log line from Kapo itself. This is useful if your supervised process is writing undecorated strings and you have a need to capture the time context.
 
 ## Expvar
 The listener exposes basic runtime metrics via [expvar](https://golang.org/pkg/expvar/) for use with [expvarmon](https://github.com/divan/expvarmon).
