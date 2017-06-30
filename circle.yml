@@ -2,12 +2,6 @@ dependencies:
   pre:
     - gem install fpm --no-rdoc --no-ri
     - sudo apt-get install rpm -f -y
-  override:
-    - go get -t -d -v ./...
-    - cd $GOPATH
-    - go get github.com/sparrc/gdm
-    - gdm restore
-    - go build
 test:
   post:
     - scripts/package.sh
