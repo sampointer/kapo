@@ -1,6 +1,7 @@
 package process
 
 import (
+	"bufio"
 	"context"
 	"encoding/json"
 	//Blank import just to gain the default internal metrics
@@ -10,6 +11,7 @@ import (
 	"github.com/coreos/go-systemd/daemon"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/urfave/cli.v1"
+	"io"
 	"net"
 	"net/http"
 	"os/exec"
@@ -108,6 +110,27 @@ func Run(c *cli.Context, modeverb string) (int, string) {
 	}
 	cmd := exec.CommandContext(ctx, path, c.Args().Tail()...)
 
+	// STDOUT and STDERR processing
+	if c.GlobalBool("stdout") {
+		stdout, err := cmd.StdoutPipe()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		log.Info("capturing process stdout")
+		go standardOutput(stdout, c.GlobalBool("stdlog"))
+	}
+
+	if c.GlobalBool("stderr") {
+		stderr, err := cmd.StderrPipe()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		log.Info("capturing process stderr")
+		go standardOutput(stderr, c.GlobalBool("stdlog"))
+	}
+
 	// Start execution
 	err = cmd.Start()
 	if err != nil {
@@ -157,4 +180,20 @@ func handler(w http.ResponseWriter, r *http.Request, status []Status) {
 // Given an interface and a port, return interface:port
 func interfaceandport(i string, p uint16) string {
 	return fmt.Sprintf("%s:%s", i, strconv.FormatUint(uint64(p), 10))
+}
+
+// standardOutput handles processing of STDOUT and STDERR of the supervised
+// process
+func standardOutput(s io.ReadCloser, l bool) {
+	var line string
+	rd := bufio.NewReader(s)
+
+	for {
+		line, _ = rd.ReadString('\n')
+		if l {
+			log.Printf("%s", strings.TrimSuffix(line, "\n"))
+		} else {
+			fmt.Printf("%s", line)
+		}
+	}
 }
