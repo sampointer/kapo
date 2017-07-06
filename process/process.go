@@ -35,7 +35,7 @@ type Status struct {
 	Wait         time.Duration
 }
 
-// Start the HTTP listener
+//Setup starts the HTTP listener
 func Setup(c *cli.Context, s *[]Status) (uint16, error) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { handler(w, r, *s) })
 
@@ -65,18 +65,18 @@ func Setup(c *cli.Context, s *[]Status) (uint16, error) {
 	// If we've been asked to sidebind locate the next highest
 	// available port and bind a listener to that, too.
 	if c.GlobalBool("sidebind") {
-		sidebind_port := uint16(c.GlobalInt64("port"))
+		sidebindPort := uint16(c.GlobalInt64("port"))
 		for {
-			sidebind_port++
-			log.Printf("attempting sidebinding to %d", sidebind_port)
-			listen, err := net.Listen("tcp", fmt.Sprintf(":%d", sidebind_port))
+			sidebindPort++
+			log.Printf("attempting sidebinding to %d", sidebindPort)
+			listen, err := net.Listen("tcp", fmt.Sprintf(":%d", sidebindPort))
 			if err == nil {
 				// Available port found, bind to it
 				listen.Close()
-				bindaddr := interfaceandport(c.GlobalString("interface"), sidebind_port)
+				bindaddr := interfaceandport(c.GlobalString("interface"), sidebindPort)
 				go http.ListenAndServe(bindaddr, nil)
 				log.Printf("sidebinding to %s", bindaddr)
-				return sidebind_port, nil
+				return sidebindPort, nil
 			}
 		}
 	}
