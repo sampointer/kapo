@@ -23,9 +23,9 @@ func CmdRun(c *cli.Context) error {
 
 	statuses = append(statuses, status)
 
-	sidebind_port, _ := process.Setup(c, &statuses)
+	sidebindPort, _ := process.Setup(c, &statuses)
 
-	statuses[0].SidebindPort = sidebind_port
+	statuses[0].SidebindPort = sidebindPort
 	statuses[0].StartTime = time.Now()
 	statuses[0].ExitCode, statuses[0].Status = process.Run(c, "running")
 	statuses[0].EndTime = time.Now()

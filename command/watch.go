@@ -19,7 +19,7 @@ func CmdWatch(c *cli.Context) error {
 	var watched []process.Status
 
 	wait := time.Duration(c.Int("wait")) * time.Second
-	sidebind_port, _ := process.Setup(c, &statuses)
+	sidebindPort, _ := process.Setup(c, &statuses)
 
 	if c.Int("pid") > 0 {
 		log.Printf("Watching process %s with PID %d", c.Args().First(), c.Int("pid"))
@@ -33,7 +33,7 @@ func CmdWatch(c *cli.Context) error {
 			status = process.Status{
 				Command:      c.Args().First(),
 				Mode:         "watch",
-				SidebindPort: sidebind_port,
+				SidebindPort: sidebindPort,
 				Wait:         wait,
 			}
 
@@ -62,7 +62,7 @@ func CmdWatch(c *cli.Context) error {
 						status = process.Status{
 							Command:      c.Args().First(),
 							Mode:         "watch",
-							SidebindPort: sidebind_port,
+							SidebindPort: sidebindPort,
 							StartTime:    getstarttime(p.Pid()),
 							Status:       "running",
 							Wait:         wait,
