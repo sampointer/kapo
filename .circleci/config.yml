@@ -21,7 +21,7 @@ jobs:
       - image: circleci/golang:1.14
     steps:
       - checkout
-      - run: go test ./...
+      #- run: go test ./...
       - run: curl -sL https://git.io/goreleaser | bash
   build:
     docker:
