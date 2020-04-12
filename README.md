@@ -197,22 +197,16 @@ The listener exposes basic runtime metrics via
 [expvar](https://golang.org/pkg/expvar/) for use with
 [expvarmon](https://github.com/divan/expvarmon).
 
-## Install
+## Installing
+### Homebrew
+```
+brew tap sampointer/kapo
+brew install kapo
+```
 
-* Binaries built for `amd_64`: [version 0.6.0][1]
-* Debian package: [version 0.6.0][2]
-* rpm package: [version 0.6.0][3]
-* Go: `go install github.com/sampointer/kapo`
-
-## Contribution
-
-1. Fork ([https://github.com/sampointer/kapo/fork](https://github.com/sampointer/kapo/fork))
-1. Create a feature branch
-1. Commit your changes
-1. Rebase your local changes against the master branch
-1. Run test suite with the `go test ./...` command and confirm that it passes
-1. Run `gofmt -s`
-1. Create a new Pull Request
+### Manually
+Download the appropriate package for your distribution from the
+[releases](https://github.com/sampointer/kapo/releases) page.
 
 ## Kapo?
 Keep A Port Open.
