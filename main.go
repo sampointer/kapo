@@ -10,7 +10,7 @@ func main() {
 	app := cli.NewApp()
 	app.Name = Name
 	app.Version = Version
-	app.Author = "Copyright 2017 Sam Pointer"
+	app.Author = "Copyright 2017, 2020 Sam Pointer"
 	app.Email = "sam@outsidethe.net"
 	app.Usage = "Wrap any command in a status socket"
 
