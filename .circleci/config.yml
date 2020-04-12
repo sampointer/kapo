@@ -1,0 +1,35 @@
+# .circleci/config.yml
+version: 2.1
+workflows:
+  main:
+    jobs:
+      - release:
+          # Only run this job on git tag pushes
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+      - build:
+          filters:
+            branches:
+              only: 
+                - master
+jobs:
+  release:
+    docker:
+      - image: circleci/golang:1.14
+    steps:
+      - checkout
+      - run: go test ./...
+      - run: curl -sL https://git.io/goreleaser | bash
+  build:
+    docker:
+      - image: circleci/golang:1.14
+    steps:
+      - checkout
+      - run: go test ./...
+      - run: go build
+      - store_artifacts:
+          path: kapo
+          destination: kapo
