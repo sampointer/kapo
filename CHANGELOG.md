@@ -1,3 +1,10 @@
+## 1.0.0
+
+* Move to CircleCI v2
+* Move to goreleaser.com for releases
+* Homebrew packaging
+* Move to github releases for future change logs
+
 ## 0.6.0
 
 * Add `STDOUT` and `STDERR` capturing
