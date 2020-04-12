@@ -31,17 +31,17 @@ brews:
   -
     github:
       owner: sampointer
-      name: homebrew-dy
+      name: homebrew-kapo
 
     commit_author:
       name: goreleaserbot
       email: sam@outsidethe.net
 
     folder: Formula
-    homepage: "https://github.com/sampointer/dy"
-    description: "Construct YAML from a directory tree"
+    homepage: "https://github.com/sampointer/kapo"
+    description: "Wrap any command in a status socket"
     install : |
-      bin.install "dy"
+      bin.install "kapo"
 
 # Packages
 nfpms:
@@ -50,6 +50,6 @@ nfpms:
       - deb
       - rpm
     vendor: "Sam Pointer"
-    homepage: "https://github.com/sampointer/dy"
+    homepage: "https://github.com/sampointer/kapo"
     maintainer: "Sam Pointer <sam@outsidethe.net>"
     description: "Construct YAML from a directory tree"
