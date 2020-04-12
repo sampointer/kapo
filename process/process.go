@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"context"
 	"encoding/json"
+	"runtime"
 	//Blank import just to gain the default internal metrics
 	_ "expvar"
 	"fmt"
@@ -41,6 +42,11 @@ func Setup(c *cli.Context, s *[]Status) (uint16, error) {
 
 	// Start the status server in a gorountine
 	if c.GlobalBool("socket-activation") {
+		//systemd is not supported on MacOS
+		if runtime.GOOS == "darwin" {
+			log.Fatal("systemd socket activation is not supported on MacOS")
+		}
+
 		// Expect listeners from systemd socket activation
 		listeners, err := activation.Listeners()
 
