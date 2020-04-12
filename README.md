@@ -3,7 +3,9 @@ Wrap any command in a status socket.
 
 
 ## Description
-Kapo is a swiss-army knife for integrating programs that do not have their own method of presenting their status over a network with those that need it.
+Kapo is a swiss-army knife for integrating programs that do not have their own
+method of presenting their status over a network with those that need it.
+
 Examples might be:
 
 1. Allow queue workers to be monitored by your service discovery system
@@ -11,34 +13,44 @@ Examples might be:
 1. Abuse load balancers to route traffic based on an open port
 1. Expose the running status of configuration management tools
 1. Alert if a process fails too often
-1. Start and monitor non-networked programs on-demand using [systemd socket activation](https://github.com/sampointer/kapo#socket-activation)
+1. Start and monitor non-networked programs on-demand using [systemd socket
+   activation](https://github.com/sampointer/kapo#socket-activation)
 
-When a program is executed under `kapo` a JSON-speaking HTTP server is started and the state of the process is reported to whomever requests it.
+When a program is executed under `kapo` a JSON-speaking HTTP server is started
+and the state of the process is reported to whomever requests it.
 
-This server will respond correctly to HEAD requests. The open socket will function as an indicator of aliveness. The body is a JSON document reflecting
+This server will respond correctly to HEAD requests. The open socket will
+function as an indicator of aliveness. The body is a JSON document reflecting
 process state.
 
-Requests could be as simple as inferring the process is alive if a socket can be opened to as complex as parsing the JSON schema and performing
-selective actions based on the state reported therein.
+Requests could be as simple as inferring the process is alive if a socket can
+be opened to as complex as parsing the JSON schema and performing selective
+actions based on the state reported therein.
 
 ### Modes
 
 `kapo` can be run in one of three modes: `run`, `supervise` and `watch`.
 
-The first is the most useful as a container `ENTRYPOINT`, especially in tandem with the `--ttl` flag to inject some chaos.
+The first is the most useful as a container `ENTRYPOINT`, especially in tandem
+with the `--ttl` flag to inject some chaos.
 
-The second will prop up a failing process by continually restarting it if it fails (with an optional wait interval), reporting interesting facts like the last return code and start time on the status listener.
+The second will prop up a failing process by continually restarting it if it
+fails (with an optional wait interval), reporting interesting facts like the
+last return code and start time on the status listener.
 
-The third, `watch`, is for use in tandem with your preferred process supervisor: it'll infer the state of the
-process from the process list of the operating system. By default `watch` will match all processes in the process list that match the binary name
-given as the argument. Passing `--pid` limits the scope to just that process.
+The third, `watch`, is for use in tandem with your preferred process
+supervisor: it'll infer the state of the process from the process list of the
+operating system. By default `watch` will match all processes in the process
+list that match the binary name given as the argument. Passing `--pid` limits
+the scope to just that process.
 
 The utility of all of this is probably best illustrated via some examples:
 
 ### Examples
 #### Abuse an ELB to keep a pool of queue workers running
 1. Create an ELB with no external ingress
-1. Configure the ELB Health check to perform a TCP or HTTP check on port 6666 with failure criteria that suit your application
+1. Configure the ELB Health check to perform a TCP or HTTP check on port 6666
+   with failure criteria that suit your application
 1. Create an auto-scaling group with `HealthCheckType: ELB`
 1. Have each host start their worker under `kapo`:
 
@@ -46,9 +58,11 @@ The utility of all of this is probably best illustrated via some examples:
 $ kapo --interface 0.0.0.0 --port 6666 run -- ./worker.py --dowork myqueue
 ```
 
-Should the worker on any given node die the ELB will instruct the ASG to kill the node and another will be provisioned to replace it.
+Should the worker on any given node die the ELB will instruct the ASG to kill
+the node and another will be provisioned to replace it.
 
-A slightly less expensive variant that resurrects worker processes if it can is:
+A slightly less expensive variant that resurrects worker processes if it can
+is:
 
 ```bash
 $ kapo supervise --wait 30 -- ./worker.py --dowork myqueue
@@ -62,18 +76,21 @@ $ curl http://localhost:6666 2>/dev/null
 ```
 
 #### As a Container `ENTRYPOINT` to inject random failure, exercise your scheduler's resilience and add TTLs to containers
-As all good proponents of the [SRE model](https://landing.google.com/sre/book.html) know, forcing failures by periodically killing execution units,
-forcing circuit breakers to fire, and reguarly refreshing your running environment are vital. `kapo` can be used as a container `ENTRYPOINT` to
-force containers to have a random TTL:
+
+As all good proponents of the [SRE
+model](https://landing.google.com/sre/book.html) know, forcing failures by
+periodically killing execution units, forcing circuit breakers to fire, and
+reguarly refreshing your running environment are vital. `kapo` can be used as a
+container `ENTRYPOINT` to force containers to have a random TTL: ```
 
 ```
 FROM ubuntu:latest
 COPY kapo kapo
 RUN apt-get update && apt-get install stress
 EXPOSE 6666
-ENTRYPOINT /bin/bash -c './kapo --interface 0.0.0.0 --port 6666 run --ttl $(($RANDOM % 30 + 1)) -- stress -c 1'
+ENTRYPOINT /bin/bash -c './kapo --interface 0.0.0.0 --port 6666 run --ttl $(($RANDOM % 30 + 1)) -- '
+CMD ["stress", "-c", "1"]
 ```
-
 ### Expose Puppet run activity
 ```bash
 $ nohup kapo watch puppet &
@@ -85,11 +102,20 @@ $ curl http://somehost:6666 2>/dev/null
 ```
 
 ## Socket Activation
-Kapo can listen for connections via [systemd socket activation](http://0pointer.de/blog/projects/socket-activation.html) by passing the global option `--socket-activation` (or setting `KAPO_SOCKET_ACTIVATION`) and configuring systemd as appropriate.
+Kapo can listen for connections via [systemd socket
+activation](http://0pointer.de/blog/projects/socket-activation.html) by passing
+the global option `--socket-activation` (or setting `KAPO_SOCKET_ACTIVATION`)
+and configuring systemd as appropriate.
 
-When `--socket-activation` is passed any configured interface or port is ignored for the purposes of binding. The `--sidebind` global option will attempt to bind a second listener to the incrementing values above `--port` on `--interface` until it is successful.
+When `--socket-activation` is passed any configured interface or port is
+ignored for the purposes of binding. The `--sidebind` global option will
+attempt to bind a second listener to the incrementing values above `--port` on
+`--interface` until it is successful.
 
-There are a number of interesting use-cases for this functionality, including but not limited to starting and inspecting the status of non-networked programs and scripts on-demand upon receipt of a TCP connection, using `run` mode and `--sidebind`.
+There are a number of interesting use-cases for this functionality, including
+but not limited to starting and inspecting the status of non-networked programs
+and scripts on-demand upon receipt of a TCP connection, using `run` mode and
+`--sidebind`.
 
 ```
 # useful.service
@@ -122,20 +148,27 @@ $ systemctl start useful.socket
 $ systemctl enable useful.service # But not started on boot
 ```
 
-One can then `curl http://localhost:6666` to have systemd start an instance
-of `useful.sh`. The connection to the socket will remain open for the duration
-of the execution of the process. We'll receive a status structure:
+One can then `curl http://localhost:6666` to have systemd start an instance of
+`useful.sh`. The connection to the socket will remain open for the duration of
+the execution of the process. We'll receive a status structure:
 
 ```
 [{"Arguments":null,"Command":"/usr/local/bin/useful.sh","EndTime":"0001-01-01T00:00:00Z","ExitCode":0,"Mode":"run","StartTime":"2017-03-02T18:20:28.762060588Z","Status":"running","TTL":0,"SidebindPort": 6667, "Wait":5000000000}]
 ```
 
-If we wanted to get a further update on the execution status of this process we cannot, of course, `curl http://localhost:6666` as this was start _another_ instance of the service. Instead we can see from the initial call above that we have a `SidebindPort` returned on which `kapo` has started another listener, by virtue of us passing `--sidebind`. We can interrogate this to our heart's content. If we _were_ to start another instance of the service whilst the original one was still executing we'd be returned a different `SidebindPort` by that instance.
+If we wanted to get a further update on the execution status of this process we
+cannot, of course, `curl http://localhost:6666` as this was start _another_
+instance of the service. Instead we can see from the initial call above that we
+have a `SidebindPort` returned on which `kapo` has started another listener, by
+virtue of us passing `--sidebind`. We can interrogate this to our heart's
+content. If we _were_ to start another instance of the service whilst the
+original one was still executing we'd be returned a different `SidebindPort` by
+that instance.
 
 ## Configuration
 ### Environment Variables
-Switch arguments can be configured by setting an appropriately named environment
-variable:
+Switch arguments can be configured by setting an appropriately named
+environment variable:
 
 * `KAPO_PORT`
 * `KAPO_INTERFACE`
@@ -149,12 +182,20 @@ variable:
 * `KAPO_WATCHPID`
 
 ### Capturing STDOUT and STDERR
-Many container execution environments implement logging by capturing the `STDOUT` and `STDERR` of the process executing in the container. By passing the global options `--stdout` and `--stderr` one may capture fds 1 and 2 from the supervised process and echo them up to whatever is in turn executing Kapo.
+Many container execution environments implement logging by capturing the
+`STDOUT` and `STDERR` of the process executing in the container. By passing the
+global options `--stdout` and `--stderr` one may capture fds 1 and 2 from the
+supervised process and echo them up to whatever is in turn executing Kapo.
 
-Passing the `--stdlog` flag alongside one or both of these options causes Kapo to emit each line read as a log line from Kapo itself. This is useful if your supervised process is writing undecorated strings and you have a need to capture the time context.
+Passing the `--stdlog` flag alongside one or both of these options causes Kapo
+to emit each line read as a log line from Kapo itself. This is useful if your
+supervised process is writing undecorated strings and you have a need to
+capture the time context.
 
 ## Expvar
-The listener exposes basic runtime metrics via [expvar](https://golang.org/pkg/expvar/) for use with [expvarmon](https://github.com/divan/expvarmon).
+The listener exposes basic runtime metrics via
+[expvar](https://golang.org/pkg/expvar/) for use with
+[expvarmon](https://github.com/divan/expvarmon).
 
 ## Install
 

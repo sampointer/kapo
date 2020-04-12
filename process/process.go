@@ -42,7 +42,7 @@ func Setup(c *cli.Context, s *[]Status) (uint16, error) {
 	// Start the status server in a gorountine
 	if c.GlobalBool("socket-activation") {
 		// Expect listeners from systemd socket activation
-		listeners, err := activation.Listeners(true)
+		listeners, err := activation.Listeners()
 
 		if err != nil {
 			panic(err)
