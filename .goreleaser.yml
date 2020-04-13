@@ -52,4 +52,4 @@ nfpms:
     vendor: "Sam Pointer"
     homepage: "https://github.com/sampointer/kapo"
     maintainer: "Sam Pointer <sam@outsidethe.net>"
-    description: "Construct YAML from a directory tree"
+    description: "Wrap any command in a status socket"
