@@ -140,7 +140,7 @@ func Run(c *cli.Context, modeverb string) (int, string) {
 	// Start execution
 	err = cmd.Start()
 	if err != nil {
-		log.Fatal("failed to start %s %s", path, strings.Join(c.Args().Tail(), " "))
+		log.Fatalf("failed to start %s %s", path, strings.Join(c.Args().Tail(), " "))
 	}
 	log.Printf("%s %s %s", modeverb, path, strings.Join(c.Args().Tail(), " "))
 
